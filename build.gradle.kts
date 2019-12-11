@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     // logging
-    implementation("io.github.microutils:kotlin-logging:1.6.+")
+    implementation("io.github.microutils:kotlin-logging:1.7.+")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
