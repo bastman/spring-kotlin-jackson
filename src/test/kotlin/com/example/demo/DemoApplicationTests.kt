@@ -58,9 +58,13 @@ class DemoApplicationTests {
         // but does not work with listOf(Github239EitherCustomized)
 
         // see: https://github.com/FasterXML/jackson-module-kotlin/commit/d5d76529f538d69fb71002b3bb593fa558e40b55
-        val items = arrayOf(
+        val items = listOf(
                 Github239EitherCustomized.A(), Github239EitherCustomized.B()
         )
+
+        items.forEach {
+            println(JSON.writeValueAsString(it))
+        }
         val json = JSON.writeValueAsString(items)
         println(json)
         //val aReloaded:List<Github239EitherCustomized> = JSON.readValue(json)
