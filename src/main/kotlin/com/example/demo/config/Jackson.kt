@@ -4,15 +4,15 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import mu.KLogging
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import mu.KLogging
 
 @Configuration
 class Jackson {
 
     @Bean
-    fun objectMapper():ObjectMapper = defaultMapper()
+    fun objectMapper(): ObjectMapper = defaultMapper()
             .also {
                 logger.info {
                     """
@@ -21,8 +21,8 @@ class Jackson {
                 }
             }
 
-    companion object:KLogging() {
-        fun defaultMapper():ObjectMapper = jacksonObjectMapper()
+    companion object : KLogging() {
+        fun defaultMapper(): ObjectMapper = jacksonObjectMapper()
                 .findAndRegisterModules()
                 // toJson()
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)

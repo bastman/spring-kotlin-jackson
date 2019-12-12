@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.demo.tests.github239
 
 import com.example.demo.config.Jackson
 import com.fasterxml.jackson.annotation.JsonSubTypes
@@ -12,8 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest
 import java.time.Duration
 import java.time.Instant
 
+/**
+ * see:
+ * - https://github.com/FasterXML/jackson-module-kotlin/commit/d5d76529f538d69fb71002b3bb593fa558e40b55
+ * - https://github.com/FasterXML/jackson-module-kotlin/issues/277
+ */
+
 @SpringBootTest
-class DemoApplicationTests {
+class Github239 {
     @Test
     fun contextLoads() {
     }
