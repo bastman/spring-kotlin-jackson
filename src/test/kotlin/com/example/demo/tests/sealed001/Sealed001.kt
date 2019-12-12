@@ -15,10 +15,10 @@ class Sealed001 {
 
     @TestFactory
     fun foo() = testFactory {
-        test("a (works with jackson 2.9.9") {
+        test("a (works with jackson 2.9.9, 2.10.1") {
             val a = ADto(
+                    fyId = UUID.fromString("405334a1-f2b1-492a-b782-dc921572e0d8"),
                     createdAt = Instant.parse("2019-12-12T10:52:23.372952Z"),
-                    myId = UUID.fromString("405334a1-f2b1-492a-b782-dc921572e0d8"),
                     a = 100
             )
             val aJson = JSON.writeValueAsString(a)
@@ -28,14 +28,14 @@ class Sealed001 {
             aReloaded `should be instance of` FDto::class
             aReloaded `should be instance of` ADto::class
             aReloaded.createdAt shouldEqual a.createdAt
-            aReloaded.myId shouldEqual a.myId
+            aReloaded.fyId shouldEqual a.fyId
         }
         test("b") {
-            val b = BDto(createdAt = Instant.now(), myId = UUID.randomUUID(),b = true)
+            val b = BDto(fyId = UUID.randomUUID(), createdAt = Instant.now(), b = true)
             val bJson = JSON.writeValueAsString(b)
-            val bReloaded: FDto = JSON.readValue(bJson)
+            val bReloaded: BDto = JSON.readValue(bJson)
             bReloaded `should be instance of` FDto::class
-            bReloaded `should be instance of` ADto::class
+            bReloaded `should be instance of` BDto::class
         }
 
     }
@@ -47,18 +47,19 @@ class Sealed001 {
 private val JSON = Jackson.defaultMapper()
 
 sealed class FDto {
+    abstract val fyId: UUID
     abstract val createdAt: Instant
-    abstract val myId:UUID
+
 }
 
 data class ADto(
+        override val fyId: UUID,
         override val createdAt: Instant,
-        override val myId: UUID,
         val a: Int
 ) : FDto()
 
 data class BDto(
+        override val fyId: UUID,
         override val createdAt: Instant,
-        override val myId: UUID,
         val b: Boolean
 ) : FDto()

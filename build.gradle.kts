@@ -29,7 +29,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // serialization: jackson json
-    val jacksonVersion =  "2.9.9"
+    //val jacksonVersion =  "2.9.9"
+    val jacksonVersion =  "2.10.1"
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
