@@ -4,6 +4,7 @@ import com.example.demo.config.Jackson
 import com.example.demo.testutils.json.shouldEqualJson
 import com.example.demo.testutils.json.stringify
 import com.example.demo.testutils.junit5.testFactory
+import com.example.demo.testutils.random.*
 import com.example.demo.util.resources.loadResource
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -28,18 +29,21 @@ class SimpleTests {
 
     @Test
     fun generate_A() {
-        val sources = listOf(
-                A(
-                        int = 101, bool = false, string = "xxx", double = 1.3,
-                        instant = Instant.now(), duration = Duration.ofHours(3),
-                        uuid = UUID.randomUUID()
-                ),
-                A(
-                        int = 102, bool = true, string = "yyy", double = 1.312345677,
-                        instant = Instant.now(), duration = Duration.ofMinutes(2),
-                        uuid = UUID.randomUUID()
-                )
-        )
+        val sources = (0..100).map {
+            A(
+                    int = (Int.MIN_VALUE..Int.MAX_VALUE).random(),
+                    bool = randomBoolean(),
+                    string = randomString(prefix = "random-string-"),
+                    double = (Double.MIN_VALUE..Double.MAX_VALUE).random(),
+                    instant = listOf(
+                            Instant.now(),
+                            ((Instant.parse("1719-12-12T08:19:42.651828Z"))..(Instant.parse("2319-12-12T08:19:42.651828Z"))).randomInstant()
+                    )
+                            .shuffled().first(),
+                    duration = (Int.MIN_VALUE..Int.MAX_VALUE).randomDurationOfSeconds(),
+                    uuid = UUID.randomUUID()
+            )
+        }
 
         val startIndex = 0
         sources.forEachIndexed { index, testCase ->
