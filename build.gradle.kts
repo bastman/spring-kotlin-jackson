@@ -21,10 +21,25 @@ dependencies {
     // logging
     implementation("io.github.microutils:kotlin-logging:1.7.+")
 
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude(group="com.fasterxml.jackson.core")
+    }
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    // serialization: jackson json
+    val jacksonVersion =  "2.9.9"
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-modules-java8:$jacksonVersion")
+    implementation( "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation( "com.fasterxml.jackson.module:jackson-module-parameter-names:$jacksonVersion")
+    implementation( "com.fasterxml.jackson.datatype:jackson-datatype-jdk8:$jacksonVersion")
+    implementation( "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+
+
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
