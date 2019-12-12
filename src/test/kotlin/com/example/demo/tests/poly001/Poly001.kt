@@ -25,20 +25,27 @@ class Poly001 {
             )
             val aJson = JSON.writeValueAsString(a)
             println("json: $aJson")
-            val aReloaded: ADto = JSON.readValue(aJson)
-            aReloaded `should be instance of` FDto::class
-            aReloaded `should be instance of` ADto::class
-            aReloaded.createdAt shouldEqual a.createdAt
-            aReloaded.myId shouldEqual a.myId
-            aReloaded shouldEqual a
+            val aReloaded = JSON.readValue<ADto>(aJson)
+                    .also {
+                        println("aReloaded: $it")
+                        it `should be instance of` FDto::class
+                        it `should be instance of` ADto::class
+                        it.createdAt shouldEqual a.createdAt
+                        it.myId shouldEqual a.myId
+                        it shouldEqual a
+                    }
 
-            val fReloaded: FDto = JSON.readValue(aJson)
-            fReloaded `should be instance of` FDto::class
-            fReloaded `should be instance of` ADto::class
-            fReloaded.createdAt shouldEqual a.createdAt
-            fReloaded.myId shouldEqual a.myId
-            fReloaded shouldEqual a
-            fReloaded shouldEqual aReloaded
+            val fReloaded: FDto = JSON.readValue<FDto>(aJson)
+                    .also {
+                        println("fReloaded: $it")
+                        it `should be instance of` FDto::class
+                        it `should be instance of` ADto::class
+                        it.createdAt shouldEqual a.createdAt
+                        it.myId shouldEqual a.myId
+                        it shouldEqual a
+                        it shouldEqual aReloaded
+                    }
+
         }
         test("b - works with jackson 2.10.1") {
             val b = BDto(
@@ -47,21 +54,28 @@ class Poly001 {
                     b = true
             )
             val bJson = JSON.writeValueAsString(b)
-            val bReloaded: FDto = JSON.readValue(bJson)
-            bReloaded `should be instance of` FDto::class
-            bReloaded `should be instance of` BDto::class
-            bReloaded.createdAt shouldEqual b.createdAt
-            bReloaded.myId shouldEqual b.myId
-            bReloaded shouldEqual b
+            val bReloaded: FDto = JSON.readValue<FDto>(bJson)
+                    .also {
+                        println("bReloaded: $it")
+                        it `should be instance of` FDto::class
+                        it `should be instance of` BDto::class
+                        it.createdAt shouldEqual b.createdAt
+                        it.myId shouldEqual b.myId
+                        it shouldEqual b
+                    }
 
-            val fReloaded: FDto = JSON.readValue(bJson)
-            fReloaded `should be instance of` FDto::class
-            fReloaded `should be instance of` BDto::class
-            fReloaded.createdAt shouldEqual b.createdAt
-            fReloaded.myId shouldEqual b.myId
+            val fReloaded: FDto = JSON.readValue<FDto>(bJson)
+                    .also {
+                        println("fReloaded: $it")
+                        it `should be instance of` FDto::class
+                        it `should be instance of` BDto::class
+                        it.createdAt shouldEqual b.createdAt
+                        it.myId shouldEqual b.myId
 
-            fReloaded shouldEqual b
-            fReloaded shouldEqual bReloaded
+                        it shouldEqual b
+                        it shouldEqual bReloaded
+                    }
+
         }
 
     }
