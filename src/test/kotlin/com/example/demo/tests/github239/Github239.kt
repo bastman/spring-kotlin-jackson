@@ -25,24 +25,20 @@ class Github239 {
     }
 
     @Test
-    fun a() {
-        val a = A(int = 101, bool = false, string = "xxx", double = 1.3,
-                instant = Instant.now(), duration = Duration.ofHours(3)
-
+    fun polymorphic_0001() {
+        val c= Container(
+                either = Github239Either.A(),
+                listOfEither = listOf(Github239Either.A(), Github239Either.B()),
+                setOfEither = setOf(Github239Either.A(), Github239Either.B()),
+                mapOfEither = mapOf(
+                        "foo" to Github239Either.A(),
+                        "bar" to Github239Either.B()
+                ),
+                arrayOfEither = arrayOf(Github239Either.A(), Github239Either.B())
         )
-        val json = JSON.writeValueAsString(a)
+
+        val json = JSON.writeValueAsString(c)
         println(json)
-        val aReloaded: A = JSON.readValue(json)
-        println(JSON.writeValueAsString(aReloaded))
-        /*
-        .also {
-            println(JSON.writeValueAsString(it))
-        }
-
-         */
-
-        val aConverted: A = JSON.convertValue(aReloaded)
-        println(JSON.writeValueAsString(aConverted))
     }
 
     @Test
@@ -177,3 +173,12 @@ sealed class Github239Either {
     data class B(var otherField: String = "") : Github239Either()
 
 }
+
+
+data class Container(
+        val either:Github239Either,
+        val listOfEither:List<Github239Either>,
+        val setOfEither:Set<Github239Either>,
+        val mapOfEither:Map<String,Github239Either>,
+        val arrayOfEither:Array<Github239Either>
+)
