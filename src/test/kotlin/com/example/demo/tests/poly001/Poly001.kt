@@ -70,6 +70,7 @@ class Poly001 {
 
 private val JSON = Jackson.defaultMapper()
 
+//@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include= JsonTypeInfo.As.PROPERTY, property="myType")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 sealed class FDto {
     abstract val myId: UUID
