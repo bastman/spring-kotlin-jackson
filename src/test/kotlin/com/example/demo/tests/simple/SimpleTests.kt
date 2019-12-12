@@ -12,6 +12,8 @@ import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.springframework.boot.test.context.SpringBootTest
+import java.io.File
+import java.net.URI
 import java.time.Duration
 import java.time.Instant
 import java.util.*
@@ -21,7 +23,14 @@ class SimpleTests {
 
     private val resourceFolder = "golden-test-data/simple"
     private fun resourceName(baseName: String) = "/$resourceFolder/test-$baseName.json"
-    private fun baseName(index: Int) = "$index".padStart(4, "0".toCharArray().first())
+    private fun baseName(index: Int) = "$index".padStart(5, "0".toCharArray().first())
+
+    private fun resourceSinkFolderLocation():String {
+        val x=object {}.javaClass.protectionDomain.codeSource.location.file
+                .removeSuffix("/out/test/classes/")
+
+        return "$x/src/test/resources"
+    }
 
     @Test
     fun contextLoads() {
@@ -29,7 +38,11 @@ class SimpleTests {
 
     @Test
     fun generate_A() {
-        val sources = (0..100).map {
+        val saveToFilesystem = true
+        val startIndex = 0
+        val maxItems=100
+        val sinkFolder = resourceSinkFolderLocation()
+        val sources = (0..maxItems).map {
             A(
                     int = (Int.MIN_VALUE..Int.MAX_VALUE).random(),
                     bool = randomBoolean(),
@@ -45,15 +58,20 @@ class SimpleTests {
             )
         }
 
-        val startIndex = 0
+
         sources.forEachIndexed { index, testCase ->
             val baseName = baseName(index = startIndex + index)
             val resource = resourceName(baseName)
+            val sink = "$sinkFolder$resource"
             val json = JSON.stringify(testCase)
 
             println("===== testcase (json): $resource ====")
             println(json)
-            println("====== $resource ===========")
+            println("====== $sink ===========")
+            if(saveToFilesystem) {
+                val f = File(sink)
+                f.writeText(json, Charsets.UTF_8)
+            }
         }
 
 
