@@ -33,7 +33,7 @@ object CodeSourceResources {
         if ((oldSuffixRequired) && (!location.endsWith(oldSuffix))) {
             error(
                     "Can not replace oldSuffice with newSuffix in location string!" +
-                            "reason: location must end with oldSuffix !" +
+                            " reason: location must end with oldSuffix !" +
                             " oldSuffix (expected): $oldSuffix newSuffix: $newSuffix location: $location"
             )
         }
