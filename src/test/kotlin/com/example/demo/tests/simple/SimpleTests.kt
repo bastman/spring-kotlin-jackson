@@ -19,12 +19,9 @@ import java.util.*
 
 @SpringBootTest
 class SimpleTests {
-
     private val resourceFolder = "golden-test-data/simple"
-    private fun resourceName(baseName: String) = "/$resourceFolder/test-$baseName.json"
-    private fun baseName(index: Int) = "$index".padStart(5, "0".toCharArray().first())
 
-    private fun resourceSinkFolderLocation(): String = CodeSourceResources
+    private val codeSourceResourcesLocation:String = CodeSourceResources
             .fileLocationAsString()
             .let {
                 CodeSourceResources.replaceLocationSuffix(
@@ -34,6 +31,10 @@ class SimpleTests {
                         oldSuffixRequired = true
                 )
             }
+
+    private fun resourceBaseName(index: Int):String = "$index".padStart(5, "0".toCharArray().first())
+    private fun resourceQualifiedName(baseName: String):String = "/$resourceFolder/test-$baseName.json"
+    private fun resourceLocation(resourceName:String):String = "$codeSourceResourcesLocation.$resourceName"
 
     @Test
     fun contextLoads() {
@@ -48,7 +49,6 @@ class SimpleTests {
         val saveToFilesystem = false
         val startIndex = 0
         val maxItems = 100
-        val sinkFolder = resourceSinkFolderLocation()
         val sources = (0..maxItems).map {
             A(
                     int = (Int.MIN_VALUE..Int.MAX_VALUE).random(),
@@ -67,18 +67,16 @@ class SimpleTests {
 
 
         sources.forEachIndexed { index, testCase ->
-            val baseName = baseName(index = startIndex + index)
-            val resource = resourceName(baseName)
-            val sink = "$sinkFolder$resource"
+            val resourceBaseName:String = resourceBaseName(index = startIndex + index)
+            val resourceQualifiedName:String = resourceQualifiedName(baseName = resourceBaseName)
+            val resourceLocation:String = resourceLocation(resourceName=resourceQualifiedName)
             val json = JSON.stringify(testCase)
 
-            println("===== testcase (json): $resource ====")
+            println("===== testcase (json): resourceQualifiedName: $resourceQualifiedName ====")
             println(json)
-            println("====== $sink ===========")
+            println("====== resourceLocation: $resourceLocation ===========")
             if (saveToFilesystem) {
-                CodeSourceResources.writeTextFile(
-                        location = sink, content = json
-                )
+                CodeSourceResources.writeTextFile(location = resourceLocation, content = json)
             }
         }
 
@@ -89,10 +87,10 @@ class SimpleTests {
     @TestFactory
     fun test_A() = testFactory {
         (0..100).forEach { tcIndex ->
-            val baseName = baseName(tcIndex)
-            val resourceName = resourceName(baseName)
-            test(name = "test: $resourceName") {
-                val tcLoadedTxt: String = loadResource(resourceName)
+            val resourceBaseName:String = resourceBaseName(index = tcIndex)
+            val resourceQualifiedName:String = resourceQualifiedName(baseName = resourceBaseName)
+            test(name = "test: $resourceQualifiedName") {
+                val tcLoadedTxt: String = loadResource(resourceQualifiedName)
                         .also { println("tc.loaded.txt: $it") }
                 val tcLoaded: A = JSON.readValue(tcLoadedTxt)
                 println("tc.loaded: $tcLoaded")
