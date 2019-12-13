@@ -5,6 +5,7 @@ import com.example.demo.testutils.json.shouldEqualJson
 import com.example.demo.testutils.json.stringify
 import com.example.demo.testutils.junit5.testFactory
 import com.example.demo.testutils.random.*
+import com.example.demo.testutils.resources.CodeSourceResources
 import com.example.demo.util.resources.loadResource
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -12,7 +13,6 @@ import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.springframework.boot.test.context.SpringBootTest
-import java.io.File
 import java.time.Duration
 import java.time.Instant
 import java.util.*
@@ -24,12 +24,16 @@ class SimpleTests {
     private fun resourceName(baseName: String) = "/$resourceFolder/test-$baseName.json"
     private fun baseName(index: Int) = "$index".padStart(5, "0".toCharArray().first())
 
-    private fun resourceSinkFolderLocation(): String {
-        val x = object {}.javaClass.protectionDomain.codeSource.location.file
-                .removeSuffix("/out/test/classes/")
-
-        return "$x/src/test/resources"
-    }
+    private fun resourceSinkFolderLocation(): String = CodeSourceResources
+            .fileLocationAsString()
+            .let {
+                CodeSourceResources.replaceLocationSuffix(
+                        location = it,
+                        oldSuffix = "/out/test/classes/",
+                        newSuffix = "/src/test/resources",
+                        oldSuffixRequired = true
+                )
+            }
 
     @Test
     fun contextLoads() {
@@ -68,8 +72,9 @@ class SimpleTests {
             println(json)
             println("====== $sink ===========")
             if (saveToFilesystem) {
-                val f = File(sink)
-                f.writeText(json, Charsets.UTF_8)
+                CodeSourceResources.writeTextFile(
+                        location = sink, content = json
+                )
             }
         }
 
