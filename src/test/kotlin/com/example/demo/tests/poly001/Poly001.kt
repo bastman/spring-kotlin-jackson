@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.exc.InvalidTypeIdException
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.amshove.kluent.`should be instance of`
 import org.amshove.kluent.shouldEqual
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,22 +20,22 @@ class Poly001 {
     /**
      * you can not JSON.parse() as subtype, without the type tag :(
      */
-    @Test
-    fun test_parse_as_subtype_without_type_tag_will_fail() {
-        run {
-            val withTypeTagJson = """
+    @TestFactory
+    fun test_parse_as_subtype_without_type_tag_will_fail() = testFactory {
+        test("JSON.parse() with type tag - should work") {
+            val sourceJson = """
             {"@type":"ADto","myId":"405334a1-f2b1-492a-b782-dc921572e0d8","createdAt":"2019-12-12T10:52:23.372952Z","a":100}
         """.trimIndent()
-            val aDto = JSON.readValue<ADto>(withTypeTagJson)
+            val aDto = JSON.readValue<ADto>(sourceJson)
             println(aDto)
         }
 
-        run {
-            val withoutTypeTagJson = """
+        test("JSON.parse() without type tag - should fail") {
+            val sourceJson = """
             {"myId":"405334a1-f2b1-492a-b782-dc921572e0d8","createdAt":"2019-12-12T10:52:23.372952Z","a":100}
         """.trimIndent()
             assertThrows<InvalidTypeIdException> {
-                val aDto = JSON.readValue<ADto>(withoutTypeTagJson)
+                val aDto = JSON.readValue<ADto>(sourceJson)
                 println(aDto)
             }
         }
@@ -106,7 +105,6 @@ class Poly001 {
         }
 
     }
-
 
 
 }
