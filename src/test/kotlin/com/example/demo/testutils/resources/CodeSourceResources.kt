@@ -15,8 +15,18 @@ import java.nio.charset.Charset
  */
 
 object CodeSourceResources {
+    /**
+     * URI / URL ...
+     * returns e.g.: file:<PATH_TO_PROJECT>/out/test/classes/
+     * NOTE: ends with "/"
+     */
     fun locationURL(): URL = object {}.javaClass.protectionDomain.codeSource.location
     fun locationURI(): URI = locationURL().toURI()
+    /**
+     * File
+     * returns e.g.: <PATH_TO_PROJECT>/out/test/classes/
+     * NOTE: ends with "/"
+     */
     fun fileLocationAsString(): String = locationURL().file
 
     fun replaceLocationSuffix(location: String, oldSuffix: String, newSuffix: String, oldSuffixRequired: Boolean): String {
