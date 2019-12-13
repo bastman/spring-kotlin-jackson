@@ -21,7 +21,7 @@ import java.util.*
 class SimpleTests {
     private val resourceFolder = "golden-test-data/simple"
 
-    private val codeSourceResourcesLocation:String = CodeSourceResources
+    private val codeSourceResourcesLocation: String = CodeSourceResources
             .fileLocationAsString()
             .let {
                 CodeSourceResources.replaceLocationSuffix(
@@ -32,9 +32,9 @@ class SimpleTests {
                 )
             }
 
-    private fun resourceBaseName(index: Int):String = "$index".padStart(5, "0".toCharArray().first())
-    private fun resourceQualifiedName(resourceBaseName: String):String = "/$resourceFolder/test-$resourceBaseName.json"
-    private fun resourceLocation(resourceQualifiedName:String):String = "$codeSourceResourcesLocation.$resourceQualifiedName"
+    private fun resourceBaseName(index: Int): String = "$index".padStart(5, '0')
+    private fun resourceQualifiedName(resourceBaseName: String): String = "/$resourceFolder/test-$resourceBaseName.json"
+    private fun resourceLocation(resourceQualifiedName: String): String = "$codeSourceResourcesLocation.$resourceQualifiedName"
 
     @Test
     fun contextLoads() {
@@ -67,9 +67,9 @@ class SimpleTests {
 
 
         sources.forEachIndexed { index, testCase ->
-            val resourceBaseName:String = resourceBaseName(index = startIndex + index)
-            val resourceQualifiedName:String = resourceQualifiedName(resourceBaseName = resourceBaseName)
-            val resourceLocation:String = resourceLocation(resourceQualifiedName=resourceQualifiedName)
+            val resourceBaseName: String = resourceBaseName(index = startIndex + index)
+            val resourceQualifiedName: String = resourceQualifiedName(resourceBaseName = resourceBaseName)
+            val resourceLocation: String = resourceLocation(resourceQualifiedName = resourceQualifiedName)
             val json = JSON.stringify(testCase)
 
             println("===== testcase (json): resourceQualifiedName: $resourceQualifiedName ====")
@@ -87,8 +87,8 @@ class SimpleTests {
     @TestFactory
     fun test_A() = testFactory {
         (0..100).forEach { tcIndex ->
-            val resourceBaseName:String = resourceBaseName(index = tcIndex)
-            val resourceQualifiedName:String = resourceQualifiedName(resourceBaseName = resourceBaseName)
+            val resourceBaseName: String = resourceBaseName(index = tcIndex)
+            val resourceQualifiedName: String = resourceQualifiedName(resourceBaseName = resourceBaseName)
             test(name = "test: $resourceQualifiedName") {
                 val tcLoadedTxt: String = loadResource(resourceQualifiedName)
                         .also { println("tc.loaded.txt: $it") }
