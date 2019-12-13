@@ -1,6 +1,7 @@
 package com.example.demo.tests.simple
 
 import com.example.demo.config.Jackson
+import com.example.demo.testconfig.CodeSourceResourceBucket
 import com.example.demo.testutils.json.shouldEqualJson
 import com.example.demo.testutils.json.stringify
 import com.example.demo.testutils.junit5.testFactory
@@ -19,22 +20,13 @@ import java.util.*
 
 @SpringBootTest
 class SimpleTests {
-    private val resourceFolder = "golden-test-data/simple"
+    private val resourceFolder = "${CodeSourceResourceBucket.GOLDEN_TEST_DATA.resourceName}/simple"
 
-    private val codeSourceResourcesLocation: String = CodeSourceResources
-            .fileLocationAsString()
-            .let {
-                CodeSourceResources.replaceLocationSuffix(
-                        location = it,
-                        oldSuffix = "/out/test/classes/",
-                        newSuffix = "/src/test/resources",
-                        oldSuffixRequired = true
-                )
-            }
+    private val codeSourceResourcesLocation: String = CodeSourceResourceBucket.ROOT.codeSourceLocation
 
     private fun resourceBaseName(index: Int): String = "$index".padStart(5, '0')
     private fun resourceQualifiedName(resourceBaseName: String): String = "/$resourceFolder/test-$resourceBaseName.json"
-    private fun resourceLocation(resourceQualifiedName: String): String = "$codeSourceResourcesLocation.$resourceQualifiedName"
+    private fun resourceLocation(resourceQualifiedName: String): String = "$codeSourceResourcesLocation$resourceQualifiedName"
 
     @Test
     fun contextLoads() {
