@@ -1,11 +1,12 @@
 package com.example.demo.tests.simple
 
 import com.example.demo.config.Jackson
-import com.example.demo.testconfig.CodeSourceResourceBucket
+import com.example.demo.testconfig.CodeSourceResourceBuckets
 import com.example.demo.testutils.json.shouldEqualJson
 import com.example.demo.testutils.json.stringify
 import com.example.demo.testutils.junit5.testFactory
 import com.example.demo.testutils.random.*
+import com.example.demo.testutils.resources.CodeSourceResourceBucket
 import com.example.demo.testutils.resources.CodeSourceResources
 import com.example.demo.util.resources.loadResource
 import com.fasterxml.jackson.module.kotlin.convertValue
@@ -20,18 +21,20 @@ import java.util.*
 
 @SpringBootTest
 class SimpleTests {
-    private val resourceFolder = "${CodeSourceResourceBucket.GOLDEN_TEST_DATA.resourceName}/simple"
-
-    private val codeSourceResourcesLocation: String = CodeSourceResourceBucket.ROOT.codeSourceLocation
+    private val resourceBucket: CodeSourceResourceBucket = CodeSourceResourceBuckets
+            .GOLDEN_TEST_DATA
+            .bucket
+            .withQualifiedName { "${it.qualifiedName}/simple" }
 
     private fun resourceBaseName(index: Int): String = "$index".padStart(5, '0')
-    private fun resourceQualifiedName(resourceBaseName: String): String = "/$resourceFolder/test-$resourceBaseName.json"
-    private fun resourceLocation(resourceQualifiedName: String): String = "$codeSourceResourcesLocation$resourceQualifiedName"
+    private fun resourceQualifiedName(resourceBaseName: String): String = "${resourceBucket.qualifiedName}/test-$resourceBaseName.json"
+    private fun resourceLocation(resourceQualifiedName: String): String = "${resourceBucket.codeSourceLocation}$resourceQualifiedName"
 
     @Test
     fun contextLoads() {
-        println("locationURI: ${CodeSourceResources.locationURI()}")
-        println("locationURL.file: ${CodeSourceResources.fileLocationAsString()}")
+        println("resourceBucket: $resourceBucket")
+        println("resourceBucket.qualifiedName: ${resourceBucket.qualifiedName}")
+        println("resourceBucket.location: ${resourceBucket.location}")
     }
 
     @Test

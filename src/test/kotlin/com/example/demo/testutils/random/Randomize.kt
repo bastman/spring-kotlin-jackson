@@ -10,7 +10,7 @@ fun randomBoolean(): Boolean = listOf(true, false).shuffled().first()
 fun ClosedRange<Int>.random() =
         Random().nextInt((endInclusive + 1) - start) + start
 */
-fun ClosedRange<Int>.randomLong(): Long = (start.toLong() .. endInclusive.toLong()).random().toLong()
+fun ClosedRange<Int>.randomLong(): Long = (start.toLong()..endInclusive.toLong()).random().toLong()
 
 
 fun ClosedRange<Int>.randomDurationOfSeconds(): Duration = Duration.ofSeconds(randomLong())
@@ -45,6 +45,6 @@ inline fun <reified T : Enum<T>> randomEnumSet(itemsCount: IntRange): Set<T> {
 fun ClosedRange<Instant>.randomInstant(): Instant {
     val leftLimit = start.toEpochMilli()
     val rightLimit = endInclusive.toEpochMilli()
-    val randomEpochMilli = (leftLimit .. rightLimit).random()
+    val randomEpochMilli = (leftLimit..rightLimit).random()
     return Instant.ofEpochMilli(randomEpochMilli)
 }

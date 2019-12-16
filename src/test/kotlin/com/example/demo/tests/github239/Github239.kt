@@ -4,7 +4,6 @@ import com.example.demo.config.Jackson
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeName
-import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -26,7 +25,7 @@ class Github239 {
 
     @Test
     fun polymorphic_0001() {
-        val c= Container(
+        val c = Container(
                 either = Github239Either.A(),
                 listOfEither = listOf(Github239Either.A(), Github239Either.B()),
                 setOfEither = setOf(Github239Either.A(), Github239Either.B()),
@@ -176,9 +175,9 @@ sealed class Github239Either {
 
 
 data class Container(
-        val either:Github239Either,
-        val listOfEither:List<Github239Either>,
-        val setOfEither:Set<Github239Either>,
-        val mapOfEither:Map<String,Github239Either>,
-        val arrayOfEither:Array<Github239Either>
+        val either: Github239Either,
+        val listOfEither: List<Github239Either>,
+        val setOfEither: Set<Github239Either>,
+        val mapOfEither: Map<String, Github239Either>,
+        val arrayOfEither: Array<Github239Either>
 )
