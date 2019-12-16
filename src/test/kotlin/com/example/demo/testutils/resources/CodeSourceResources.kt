@@ -5,15 +5,6 @@ import java.net.URI
 import java.net.URL
 import java.nio.charset.Charset
 
-/*
-    private fun resourceSinkFolderLocation(): String {
-        val x = object {}.javaClass.protectionDomain.codeSource.location.file
-                .removeSuffix("/out/test/classes/")
-
-        return "$x/src/test/resources"
-    }
- */
-
 object CodeSourceResources {
     /**
      * URI / URL ...
@@ -53,4 +44,20 @@ object CodeSourceResources {
     }
 
 }
+
+data class CodeSourceResourceBucket(
+        val simpleName:String,
+        val codeSourceLocation:String
+) {
+    val qualifiedName:String = when(simpleName.isEmpty()) {
+        true -> simpleName
+        false-> "/$simpleName"
+    }
+
+    val location: String = "$codeSourceLocation$qualifiedName"
+
+    fun withSimpleName(simpleName: (CodeSourceResourceBucket)->String):CodeSourceResourceBucket =
+            copy(simpleName = simpleName(this))
+}
+
 

@@ -1,6 +1,6 @@
 package com.example.demo.testconfig
 
-import com.example.demo.testconfig.TestConfigurations.codeSourceResourcesLocation
+import com.example.demo.testutils.resources.CodeSourceResourceBucket
 import com.example.demo.testutils.resources.CodeSourceResources
 
 object TestConfigurations {
@@ -16,20 +16,20 @@ object TestConfigurations {
             }
 }
 
-enum class CodeSourceResourceBucket(val resourceName:String) {
+
+private fun foo() = TestConfigurations.codeSourceResourcesLocation
+enum class CodeSourceResourceBuckets(val bucket: CodeSourceResourceBucket) {
     ROOT(
-            resourceName = ""
+            bucket = CodeSourceResourceBucket(
+                    simpleName = "", codeSourceLocation = TestConfigurations.codeSourceResourcesLocation
+            )
     ),
     GOLDEN_TEST_DATA(
-            resourceName = "golden-test-data"
+            bucket = CodeSourceResourceBucket(
+                    simpleName = "golden-test-data", codeSourceLocation = TestConfigurations.codeSourceResourcesLocation
+            )
     )
 
     ;
 
-    val qualifiedName:String = when(resourceName.isEmpty()) {
-        true -> resourceName
-        false-> "/$resourceName"
-    }
-
-    val codeSourceLocation:String = "$codeSourceResourcesLocation$qualifiedName"
 }
