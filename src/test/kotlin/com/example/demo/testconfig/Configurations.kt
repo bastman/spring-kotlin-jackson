@@ -21,12 +21,12 @@ private fun foo() = TestConfigurations.codeSourceResourcesLocation
 enum class CodeSourceResourceBuckets(val bucket: CodeSourceResourceBucket) {
     ROOT(
             bucket = CodeSourceResourceBucket(
-                    simpleName = "", codeSourceLocation = TestConfigurations.codeSourceResourcesLocation
+                    qualifiedName = "", codeSourceLocation = TestConfigurations.codeSourceResourcesLocation
             )
     ),
     GOLDEN_TEST_DATA(
             bucket = CodeSourceResourceBucket(
-                    simpleName = "golden-test-data", codeSourceLocation = TestConfigurations.codeSourceResourcesLocation
+                    qualifiedName = "/golden-test-data", codeSourceLocation = TestConfigurations.codeSourceResourcesLocation
             )
     )
 

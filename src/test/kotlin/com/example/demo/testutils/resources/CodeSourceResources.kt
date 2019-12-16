@@ -12,6 +12,7 @@ object CodeSourceResources {
      * NOTE: ends with "/"
      */
     private fun locationURL(): URL = object {}.javaClass.protectionDomain.codeSource.location
+
     fun locationURI(): URI = locationURL().toURI()
     /**
      * File
@@ -46,18 +47,27 @@ object CodeSourceResources {
 }
 
 data class CodeSourceResourceBucket(
-        val simpleName:String,
-        val codeSourceLocation:String
+        val qualifiedName: String,
+        val codeSourceLocation: String
 ) {
-    val qualifiedName:String = when(simpleName.isEmpty()) {
-        true -> simpleName
-        false-> "/$simpleName"
+    init {
+        if (qualifiedName.isNotEmpty()) {
+            if (!qualifiedName.startsWith("/")) {
+                error("qualifiedName must start with '/' ! given: $qualifiedName")
+            }
+            if (qualifiedName.endsWith("/")) {
+                error("qualifiedName must not end with '/' ! given: $qualifiedName")
+            }
+        }
+        if (codeSourceLocation.endsWith("/")) {
+            error("codeSourceLocation must not end with '/' ! given: $codeSourceLocation")
+        }
     }
 
     val location: String = "$codeSourceLocation$qualifiedName"
 
-    fun withSimpleName(simpleName: (CodeSourceResourceBucket)->String):CodeSourceResourceBucket =
-            copy(simpleName = simpleName(this))
+    fun withQualifiedName(qualifiedName: (CodeSourceResourceBucket) -> String): CodeSourceResourceBucket =
+            copy(qualifiedName = qualifiedName(this))
 }
 
 
