@@ -30,10 +30,8 @@ class SimpleTests {
 
     @Test
     fun contextLoads() {
-        println("locationURL: ${CodeSourceResources.locationURL()}")
         println("locationURI: ${CodeSourceResources.locationURI()}")
-        println("locationURL.externalForm: ${CodeSourceResources.locationURL().toExternalForm()}")
-        println("locationURL.file: ${CodeSourceResources.locationURL().file}")
+        println("locationURL.file: ${CodeSourceResources.fileLocationAsString()}")
     }
 
     @Test

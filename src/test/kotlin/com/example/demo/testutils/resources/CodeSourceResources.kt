@@ -20,7 +20,7 @@ object CodeSourceResources {
      * returns e.g.: file:<PATH_TO_PROJECT>/out/test/classes/
      * NOTE: ends with "/"
      */
-    fun locationURL(): URL = object {}.javaClass.protectionDomain.codeSource.location
+    private fun locationURL(): URL = object {}.javaClass.protectionDomain.codeSource.location
     fun locationURI(): URI = locationURL().toURI()
     /**
      * File
