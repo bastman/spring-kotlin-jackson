@@ -96,8 +96,8 @@ class Sealed001Tests {
 
         // convert  Event (RequestA) -> Simple
         val decoded4: Simple = JSON.convertValue(decoded3)
-        println(decoded3)
-        println(decoded3.eventType)
+        println(decoded4)
+        println(decoded4.eventType)
         decoded4 `should be instance of` Simple::class
     }
 
