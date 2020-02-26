@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import java.time.Instant
 import java.util.*
 
-
 interface IEvent {
     val eventId: UUID
     val eventTime: Instant
@@ -13,16 +12,15 @@ interface IEvent {
     val data: Any
 }
 
-
 // Note: this is not(!) added to the polymorphic type hierarchy
 data class Unknown(
         override val eventId: UUID,
         override val eventTime: Instant,
         override val eventType: String,
-        override val data: Any
+        override val data: Map<String,Any?>
 ) : IEvent
 
-// The polymporhic hierarchy
+// define the polymorphic hierarchy
 
 // Tell Jackson to include a property called 'type', which determines what concrete class is represented by the JSON
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "eventType")

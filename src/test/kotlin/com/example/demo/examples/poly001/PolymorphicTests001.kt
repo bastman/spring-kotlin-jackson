@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest
 @SpringBootTest
 class PolymorphicTests001 {
 
-
     @Test
     fun unknown() {
         val txt = """
@@ -34,6 +33,8 @@ class PolymorphicTests001 {
         decoded1 `should be instance of` IEvent::class
         decoded1 `should not be instance of` IEventPolymorphic::class
         decoded1 `should be instance of` Unknown::class
+        decoded1 `should not be instance of` EventA::class
+        decoded1 `should not be instance of` EventB::class
 
         // decode as IEventPolymorphic (EventA)
         val decoded2: IEventPolymorphic = JSON.readValue(txt)
@@ -42,6 +43,8 @@ class PolymorphicTests001 {
         decoded2 `should be instance of` IEvent::class
         decoded2 `should be instance of` IEventPolymorphic::class
         decoded2 `should be instance of` EventA::class
+        decoded2 `should not be instance of` Unknown::class
+        decoded2 `should not be instance of` EventB::class
 
         // decoded1 (Simple) convertTo Event (RequestA)
         val decoded3: IEventPolymorphic = JSON.convertValue(decoded1)
@@ -50,10 +53,13 @@ class PolymorphicTests001 {
         decoded3 `should be instance of` IEvent::class
         decoded3 `should be instance of` IEventPolymorphic::class
         decoded3 `should be instance of` EventA::class
+        decoded3 `should not be instance of` Unknown::class
+        decoded3 `should not be instance of` EventB::class
 
         val r = when (val it = decoded3) {
             is EventA -> it
             is EventB -> error("should not happen")
+            // it's not a sealed hierarchy. that's why the else branch ...
             else -> error("should not happen")
         }
         println(r)
@@ -81,6 +87,8 @@ class PolymorphicTests001 {
         decoded1 `should be instance of` IEvent::class
         decoded1 `should not be instance of` IEventPolymorphic::class
         decoded1 `should be instance of` Unknown::class
+        decoded1 `should not be instance of` EventA::class
+        decoded1 `should not be instance of` EventB::class
 
         // decode as IEventPolymorphic (EventA)
         val decoded2: IEventPolymorphic = JSON.readValue(txt)
@@ -89,6 +97,8 @@ class PolymorphicTests001 {
         decoded2 `should be instance of` IEvent::class
         decoded2 `should be instance of` IEventPolymorphic::class
         decoded2 `should be instance of` EventA::class
+        decoded2 `should not be instance of` EventB::class
+        decoded2 `should not be instance of` Unknown::class
 
         // decoded1 (Unknown) convertTo Event (RequestA)
         val decoded3: IEventPolymorphic = JSON.convertValue(decoded1)
@@ -97,6 +107,8 @@ class PolymorphicTests001 {
         decoded3 `should be instance of` IEvent::class
         decoded3 `should be instance of` IEventPolymorphic::class
         decoded3 `should be instance of` EventA::class
+        decoded3 `should not be instance of` EventB::class
+        decoded3 `should not be instance of` Unknown::class
 
         val r = when (val it = decoded3) {
             is EventA -> it
@@ -156,7 +168,6 @@ class PolymorphicTests001 {
         decoded3 `should not be instance of` EventA::class
         decoded3 `should not be instance of` Unknown::class
     }
-
 
 }
 
