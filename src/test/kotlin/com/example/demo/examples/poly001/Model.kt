@@ -47,7 +47,7 @@ data class EventB(
         override val eventId: UUID,
         override val eventTime: Instant,
 
-        override val data: Map<String, Any?>
+        override val data: DetailsB
 ) : IEventPolymorphic {
     override val eventType: String = TYPE
 
