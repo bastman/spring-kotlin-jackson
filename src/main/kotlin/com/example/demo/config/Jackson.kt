@@ -1,5 +1,7 @@
 package com.example.demo.config
 
+import com.fasterxml.jackson.annotation.JsonSetter
+import com.fasterxml.jackson.annotation.Nulls
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -34,6 +36,15 @@ class Jackson {
                 .disable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
                 .enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
                 .enable(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS)
+                .withStrictNullsEnabled()
     }
 
 }
+
+/**
+ * enable strict null checks for List<T?>
+ * fail on [null]
+ * otherwise you need to ... //  @get:JsonSetter(contentNulls = Nulls.FAIL)
+ */
+private fun ObjectMapper.withStrictNullsEnabled():ObjectMapper = setDefaultSetterInfo(JsonSetter.Value.forContentNulls(Nulls.FAIL))
+
