@@ -9,13 +9,20 @@ class ApiController {
 
     @PostMapping("/foo")
     fun foo(
-            @RequestBody payload:Payload
-    ):Any {
-        return mapOf(
-                "data" to payload
+            @RequestBody input:Input
+    ):Response {
+        return Response(
+                s=input.s,
+                inlinedString = input.inlinedString
         )
     }
 
 }
 
-data class Payload(val s:String)
+data class Input(val s:String, val inlinedString: InlinedString)
+inline class InlinedString(val x:String)
+
+data class Response(
+        val s:String,
+        val inlinedString:InlinedString
+)
